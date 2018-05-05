@@ -209,8 +209,11 @@ big_integer &big_integer::operator*=(big_integer const &rhs) {
 }
 
 void big_integer::normalize(big_integer &a) {
-    while (a.size_ > 1 && a.data_[a.size_ - 1] == 0)
+    while (a.size_ > 1 && a.data_[a.size_ - 1] == 0) {
         a.size_--;
+        if (a.size_ + 1 < a.data_.size())
+            a.data_.pop_back();
+    }
     if (a.size_ == 1 && a.data_[0] == 0)
         a.sign_ = 0;
 }
