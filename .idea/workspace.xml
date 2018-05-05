@@ -13,12 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f257c4d9-fb82-4dfc-b755-e436346881df" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/big_integer.cpp" afterPath="$PROJECT_DIR$/big_integer.cpp" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/big_integer_testing.dir/big_integer.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/big_integer_testing.dir/big_integer.cpp.o" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/big_integer_testing.dir/big_integer_testing.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/big_integer_testing.dir/big_integer_testing.cpp.o" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/big_integer_testing" afterPath="$PROJECT_DIR$/cmake-build-debug/big_integer_testing" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/big_integer_testing.dir/big_integer.cpp.o" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/big_integer_testing.dir/big_integer.cpp.o" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-release/big_integer_testing" afterPath="$PROJECT_DIR$/cmake-build-release/big_integer_testing" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/cmake-build-release/" />
@@ -45,8 +41,8 @@
       <file leaf-file-name="big_integer.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/big_integer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="214" column="31" lean-forward="false" selection-start-line="214" selection-start-column="31" selection-end-line="214" selection-end-column="31" />
+            <state relative-caret-position="108">
+              <caret line="39" column="29" lean-forward="false" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
                 <element signature="e#586#598#0" expanded="true" />
@@ -209,12 +205,12 @@
       <workItem from="1525504524378" duration="2395000" />
       <workItem from="1525506939166" duration="448000" />
       <workItem from="1525512906917" duration="498000" />
-      <workItem from="1525517452612" duration="507000" />
+      <workItem from="1525517452612" duration="958000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46382000" />
+    <option name="totallyTimeSpent" value="46833000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -790,8 +786,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/big_integer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="214" column="31" lean-forward="false" selection-start-line="214" selection-start-column="31" selection-end-line="214" selection-end-column="31" />
+        <state relative-caret-position="108">
+          <caret line="39" column="29" lean-forward="false" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
             <element signature="e#586#598#0" expanded="true" />

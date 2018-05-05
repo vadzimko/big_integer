@@ -34,11 +34,10 @@ ui cast(T x) {
     return static_cast<ui>(x);
 }
 
-big_integer::big_integer(big_integer const &other) {
-    data_ = other.data_;
-    sign_ = other.sign_;
-    size_ = other.size_;
-}
+big_integer::big_integer(big_integer const &other):
+        data_(other.data_),
+        size_(other.size_),
+        sign_(other.sign_){};
 
 big_integer::big_integer(int a) {
     clear(*this, 1);
