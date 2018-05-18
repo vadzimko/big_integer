@@ -2,6 +2,10 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <cassert>
+
+typedef uint32_t ui;
+typedef uint64_t ull;
 
 ui const SHIFT = 32;
 ui const UMAX = UINT32_MAX;
@@ -34,15 +38,8 @@ ui cast(T x) {
     return static_cast<ui>(x);
 }
 
-big_integer::big_integer(big_integer const &other):
-        data_(other.data_),
-        size_(other.size_),
-        sign_(other.sign_){};
-
-big_integer::big_integer(int a) {
-    clear(*this, 1);
-    sign_ = a < 0;
-    data_[0] = cast(a);
+big_integer::big_integer(int a)
+        : data_(1, cast(a)), sign_(a < 0), size_(1) {
 }
 
 big_integer::big_integer(ui a) {
@@ -363,8 +360,7 @@ big_integer &big_integer::operator^=(big_integer const &rhs) {
 }
 
 big_integer &big_integer::operator<<=(int rhs) {
-    if (rhs < 0)
-        return *this >>= -rhs;
+    assert(rhs > 0);
 
     ui shift = cast(rhs / SHIFT);
     rhs %= SHIFT;
@@ -394,8 +390,7 @@ big_integer &big_integer::operator<<=(int rhs) {
 }
 
 big_integer &big_integer::operator>>=(int rhs) {
-    if (rhs < 0)
-        return *this <<= -rhs;
+    assert(rhs > 0);
 
     bool neg = false;
     if (sign_) {
@@ -516,7 +511,7 @@ int big_integer::abs_compare(big_integer const &a, big_integer const &b) {
         return -1;
     if (a.size_ > b.size_)
         return 1;
-    for (size_t i = a.size_; --i + 1;) {
+    for (size_t i = a.size_ - 1; i + 1 != 0; --i) {
         if (a.data_[i] < b.data_[i])
             return -1;
         if (a.data_[i] > b.data_[i])
@@ -548,14 +543,7 @@ bool operator<(big_integer const &a, big_integer const &b) {
 
 
 bool operator>(big_integer const &a, big_integer const &b) {
-    if (a.sign_ > b.sign_) {
-        return false;
-    } else if (a.sign_ < b.sign_) {
-        return true;
-    } else {
-        int comp = big_integer::abs_compare(a, b);
-        return (a.sign_ == 1 && comp == -1) || (a.sign_ == 0 && comp == 1);
-    }
+    return b < a;
 }
 
 bool operator<=(big_integer const &a, big_integer const &b) {
@@ -567,16 +555,14 @@ bool operator>=(big_integer const &a, big_integer const &b) {
 }
 
 std::string to_string(big_integer const &a) {
-    if (a == 0)
+    if (a == 0) {
         return "0";
+    }
 
     std::string res;
     big_integer temp(a);
-    bool neg = false;
-    if (temp.sign_ == 1) {
-        neg = true;
-        temp.sign_ = 0;
-    }
+    bool neg = temp.sign_;
+    temp.sign_ = false;
 
     while (temp > 0) {
         big_integer r = temp % 10;
@@ -584,8 +570,9 @@ std::string to_string(big_integer const &a) {
         res += '0' + r.data_[0];
     }
 
-    if (neg)
+    if (neg) {
         res += '-';
+    }
     reverse(res.begin(), res.end());
     return res;
 }

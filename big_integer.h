@@ -7,13 +7,14 @@
 #include <gmp.h>
 #include <vector>
 
-#define ull uint64_t
-#define ui uint32_t
-
 struct big_integer
 {
+private:
+    typedef uint32_t ui;
+    typedef uint64_t ull;
+public:
     big_integer();
-    big_integer(big_integer const& other);
+    big_integer(big_integer const& other) = default;
     big_integer(int a);
     big_integer(ui a);
     explicit big_integer(std::string const& str);
