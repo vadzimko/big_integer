@@ -1,3 +1,0 @@
-/home/vadzimko/Downloads/cpp-course/bigint/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/vadzimko/Downloads/cpp-course/bigint/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/vadzimko/Downloads/cpp-course/bigint/cmake-build-debug/CMakeFiles/big_integer_testing.dir
