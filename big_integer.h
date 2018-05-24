@@ -1,6 +1,7 @@
 #ifndef BIG_INTEGER_H
 #define BIG_INTEGER_H
 
+#include "my_vector.h"
 #include <iosfwd>
 #include <cstdint>
 #include <utility>
@@ -55,7 +56,7 @@ public:
     friend bool operator>=(big_integer const& a, big_integer const& b);
 
 private:
-    std::vector<ui> data_;
+    my_vector data_;
     bool sign_ = 0;
     size_t size_ = 0;
 
@@ -64,7 +65,7 @@ private:
     big_integer& abs_add(big_integer const& rhs, bool sign);
     big_integer& abs_sub(big_integer const& rhs, bool sign, int comp);
 
-    void add_big_int(std::vector<ui> &a, ui x, size_t index);
+    void add_big_int(my_vector &a, ui x, size_t index);
     static void swap(big_integer &a, big_integer &b);
     static int abs_compare(big_integer const& a, big_integer const& b);
     static void normalize(big_integer &a);

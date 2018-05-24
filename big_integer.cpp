@@ -28,9 +28,7 @@ big_integer::big_integer() {
 }
 
 ui cast(int x) {
-    if (x == INT_MIN)
-        return ((ui) INT_MAX) + 1;
-    else return (ui) abs(x);
+    return static_cast<ui>(abs(x));
 }
 
 template<typename T>
@@ -62,14 +60,6 @@ void big_integer::swap(big_integer &a, big_integer &b) {
     std::swap(a.data_, b.data_);
     std::swap(a.sign_, b.sign_);
     std::swap(a.size_, b.size_);
-
-//    bool temp_sign = a.sign_;
-//    a.sign_ = b.sign_;
-//    b.sign_ = temp_sign;
-//
-//    size_t temp_size = a.size_;
-//    a.size_ = b.size_;
-//    b.size_ = temp_size;
 }
 
 big_integer &big_integer::operator=(big_integer const &other) {
@@ -153,6 +143,8 @@ big_integer &big_integer::operator-=(big_integer const &rhs) {
         return abs_add(rhs, 0);
 
     int comp = abs_compare(*this, rhs);
+//    data_.print();
+//    rhs.data_.print();
     if (comp == 0)
         return clear(*this, 1);
 
@@ -167,7 +159,7 @@ big_integer &big_integer::operator-=(big_integer const &rhs) {
     }
 }
 
-void big_integer::add_big_int(std::vector<ui> &a, ui x, size_t index) {
+void big_integer::add_big_int(my_vector &a, ui x, size_t index) {
     ull sum = x;
     bool carry = 0;
     while (true) {
@@ -182,7 +174,7 @@ void big_integer::add_big_int(std::vector<ui> &a, ui x, size_t index) {
 }
 
 big_integer &big_integer::operator*=(big_integer const &rhs) {
-    std::vector<ui> temp(size_ + rhs.size_);
+    my_vector temp(size_ + rhs.size_);
 
     ull prod;
     for (size_t i = 0; i < size_; i++) {
@@ -198,6 +190,7 @@ big_integer &big_integer::operator*=(big_integer const &rhs) {
 
     sign_ ^= rhs.sign_;
     size_ += rhs.size_;
+
     this->data_ = temp;
     normalize(*this);
 
@@ -233,10 +226,11 @@ big_integer &big_integer::operator/=(big_integer const &rhs) {
 
     if (rhs.size_ == 1) {
         ui carry = 0;
-        for (size_t i = size_; --i + 1;) {
+        ui divisor = rhs.data_[0];
+        for (size_t i = size_ - 1; i + 1 != 0; --i) {
             ull cur = data_[i] + carry * SHIFTED;
-            data_[i] = cast(cur / rhs.data_[0]);
-            carry = cast(cur % rhs.data_[0]);
+            data_[i] = cast(cur / divisor);
+            carry = cast(cur % divisor);
         }
         normalize(*this);
         sign_ = neg;
@@ -277,7 +271,7 @@ big_integer &big_integer::operator/=(big_integer const &rhs) {
 }
 
 big_integer &big_integer::operator%=(big_integer const &rhs) {
-    return *this = *this - (*this / rhs) * rhs;;
+    return *this = *this - (*this / rhs) * rhs;
 }
 
 big_integer &big_integer::operator&=(big_integer const &rhs) {
@@ -565,7 +559,8 @@ std::string to_string(big_integer const &a) {
     temp.sign_ = false;
 
     while (temp > 0) {
-        big_integer r = temp % 10;
+        big_integer r;
+        r = temp % 10;
         temp /= 10;
         res += '0' + r.data_[0];
     }
