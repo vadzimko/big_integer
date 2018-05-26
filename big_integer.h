@@ -7,9 +7,6 @@
 #include <utility>
 #include <gmp.h>
 #include <vector>
-#include <functional>
-#include <cstddef>
-#include <iosfwd>
 
 struct big_integer
 {

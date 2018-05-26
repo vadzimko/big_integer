@@ -2,7 +2,6 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-#include <functional>
 
 typedef uint32_t ui;
 typedef uint64_t ull;
