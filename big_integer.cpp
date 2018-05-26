@@ -10,20 +10,8 @@ ui const SHIFT = 32;
 ui const UMAX = UINT32_MAX;
 ull const SHIFTED = (ull) 1 << SHIFT;
 
-big_integer &big_integer::clear(big_integer &a, size_t size) {
-    a.sign_ = 0;
-    a.size_ = size;
-    a.data_.assign(size_, 0);
-    return a;
-}
-
-big_integer &big_integer::resize(size_t size) {
-    data_.resize(size + 1, 0);
-    return *this;
-}
-
-big_integer::big_integer() {
-    clear(*this, 1);
+big_integer::big_integer()
+        : data_(1, 0), sign_(false), size_(1) {
 }
 
 ui cast(int x) {
@@ -131,6 +119,18 @@ big_integer &big_integer::operator+=(big_integer const &rhs) {
             return abs_sub(rhs, 0, comp);
         else return abs_sub(rhs, 1, comp);
     }
+}
+
+big_integer &big_integer::clear(big_integer &a, size_t size) {
+    a.sign_ = 0;
+    a.size_ = size;
+    a.data_.assign(size_, 0);
+    return a;
+}
+
+big_integer &big_integer::resize(size_t size) {
+    data_.resize(size + 1, 0);
+    return *this;
 }
 
 
@@ -283,7 +283,7 @@ big_integer &big_integer::operator^=(big_integer const &rhs) {
     return apply_bitwise_operation(rhs, std::bit_xor<uint32_t>());
 }
 
-big_integer big_integer::to_binary(big_integer a) {
+big_integer big_integer::inverse(big_integer a) {
     if (a.sign_ == 0) {
         return a;
     }
@@ -296,7 +296,8 @@ big_integer big_integer::to_binary(big_integer a) {
 
 template<class FunctorT>
 big_integer &big_integer::apply_bitwise_operation(big_integer const &rhs, FunctorT functor) {
-    big_integer that = to_binary(rhs);
+    big_integer that = inverse(rhs);
+    *this = inverse(*this);
 
     if (sign_) {
         --*this;
@@ -319,7 +320,7 @@ big_integer &big_integer::apply_bitwise_operation(big_integer const &rhs, Functo
 
     if (sign_) {
         data_.push_back(UMAX);
-        *this = to_binary(*this + 1);
+        *this = inverse(*this + 1);
     }
 
     normalize(*this);

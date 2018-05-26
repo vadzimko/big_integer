@@ -72,7 +72,7 @@ private:
     static void swap(big_integer &a, big_integer &b);
     static int abs_compare(big_integer const& a, big_integer const& b);
     static void normalize(big_integer &a);
-    big_integer to_binary(big_integer a);
+    big_integer inverse(big_integer a);
 
 };
 big_integer operator+(big_integer a, big_integer const& b);
