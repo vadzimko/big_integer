@@ -351,7 +351,9 @@ big_integer &big_integer::operator^=(big_integer const &rhs) {
 }
 
 big_integer &big_integer::operator<<=(int rhs) {
-    assert(rhs > 0);
+    if (rhs < 0) {
+        return *this >>= -rhs;
+    }
 
     ui shift = cast(rhs / SHIFT);
     rhs %= SHIFT;
@@ -381,7 +383,9 @@ big_integer &big_integer::operator<<=(int rhs) {
 }
 
 big_integer &big_integer::operator>>=(int rhs) {
-    assert(rhs > 0);
+    if (rhs < 0) {
+        return *this <<= -rhs;
+    }
 
     bool neg = false;
     if (sign_) {
