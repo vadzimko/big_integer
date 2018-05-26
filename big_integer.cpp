@@ -55,7 +55,6 @@ big_integer::big_integer(std::string const &str) {
         sign_ = sign;
 }
 
-
 void big_integer::swap(big_integer &a, big_integer &b) {
     std::swap(a.data_, b.data_);
     std::swap(a.sign_, b.sign_);
@@ -143,8 +142,6 @@ big_integer &big_integer::operator-=(big_integer const &rhs) {
         return abs_add(rhs, 0);
 
     int comp = abs_compare(*this, rhs);
-//    data_.print();
-//    rhs.data_.print();
     if (comp == 0)
         return clear(*this, 1);
 
@@ -319,7 +316,7 @@ big_integer &big_integer::operator|=(big_integer const &rhs) {
         } else {
             big_integer temp = rhs + 1;
             for (size_t i = 0; i < size_; i++)
-                data_[i] = ~(data_[i] | (~temp.data_[i]));
+                data_[i] = ~(data_[i] | ~temp.data_[i]);
             *this = ~*this;
         }
     }
@@ -346,7 +343,7 @@ big_integer &big_integer::operator^=(big_integer const &rhs) {
         } else {
             big_integer temp = rhs + 1;
             for (size_t i = 0; i < size_; i++)
-                data_[i] = ~(data_[i] ^ (~temp.data_[i]));
+                data_[i] = ~(data_[i] ^ ~temp.data_[i]);
             *this = ~*this;
         }
     }
@@ -523,7 +520,6 @@ bool operator!=(big_integer const &a, big_integer const &b) {
     return !(a == b);
 }
 
-
 bool operator<(big_integer const &a, big_integer const &b) {
     if (a.sign_ > b.sign_) {
         return true;
@@ -534,7 +530,6 @@ bool operator<(big_integer const &a, big_integer const &b) {
         return (a.sign_ == 1 && comp == 1) || (a.sign_ == 0 && comp == -1);
     }
 }
-
 
 bool operator>(big_integer const &a, big_integer const &b) {
     return b < a;
