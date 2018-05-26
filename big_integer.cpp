@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-#include <cassert>
+#include <functional>
 
 typedef uint32_t ui;
 typedef uint64_t ull;
@@ -272,82 +272,59 @@ big_integer &big_integer::operator%=(big_integer const &rhs) {
 }
 
 big_integer &big_integer::operator&=(big_integer const &rhs) {
-    if (!sign_ && !rhs.sign_) {
-        for (size_t i = 0; i < size_; i++)
-            data_[i] &= rhs.data_[i];
-    } else if (sign_ && rhs.sign_) {
-        ++*this;
-        big_integer temp = rhs + 1;
-        for (size_t i = 0; i < size_; i++)
-            data_[i] = ~(~data_[i] & ~temp.data_[i]);
-        --*this;
-    } else {
-        if (sign_) {
-            ++*this;
-            for (size_t i = 0; i < size_; i++)
-                data_[i] = (~data_[i] & rhs.data_[i]);
-            sign_ = 0;
-        } else {
-            big_integer temp = rhs + 1;
-            for (size_t i = 0; i < size_; i++)
-                data_[i] = data_[i] & (~temp.data_[i]);
-        }
-    }
-
-    return *this;
+    return apply_bitwise_operation(rhs, std::bit_and<uint32_t>());
 }
 
 big_integer &big_integer::operator|=(big_integer const &rhs) {
-    if (!sign_ && !rhs.sign_) {
-        for (size_t i = 0; i < size_; i++)
-            data_[i] |= rhs.data_[i];
-    } else if (sign_ && rhs.sign_) {
-        ++*this;
-        big_integer temp = rhs + 1;
-        for (size_t i = 0; i < size_; i++)
-            data_[i] = ~(~data_[i] | ~temp.data_[i]);
-        --*this;
-    } else {
-        if (sign_) {
-            ++*this;
-            for (size_t i = 0; i < size_; i++)
-                data_[i] = ~(~data_[i] | rhs.data_[i]);
-            --*this;
-        } else {
-            big_integer temp = rhs + 1;
-            for (size_t i = 0; i < size_; i++)
-                data_[i] = ~(data_[i] | ~temp.data_[i]);
-            *this = ~*this;
-        }
-    }
-    return *this;
+    return apply_bitwise_operation(rhs, std::bit_or<uint32_t>());
 }
 
 big_integer &big_integer::operator^=(big_integer const &rhs) {
-    if (!sign_ && !rhs.sign_) {
-        for (size_t i = 0; i < size_; i++)
-            data_[i] ^= rhs.data_[i];
-    } else if (sign_ && rhs.sign_) {
-        ++*this;
-        big_integer temp = rhs + 1;
-        for (size_t i = 0; i < size_; i++)
-            data_[i] = ~(data_[i] ^ ~temp.data_[i]);
-        *this = ~(--*this);
-    } else {
-        if (sign_) {
-            ++*this;
-            for (size_t i = 0; i < size_; i++)
-                data_[i] = ~(~data_[i] ^ rhs.data_[i]);
-            sign_ = 0;
-            *this = ~*this;
-        } else {
-            big_integer temp = rhs + 1;
-            for (size_t i = 0; i < size_; i++)
-                data_[i] = ~(data_[i] ^ ~temp.data_[i]);
-            *this = ~*this;
-        }
+
+    return apply_bitwise_operation(rhs, std::bit_xor<uint32_t>());
+}
+
+big_integer big_integer::to_binary(big_integer a) {
+    if (a.sign_ == 0) {
+        return a;
     }
-    return *this;
+
+    for (size_t i = 0; i < a.data_.size(); i++) {
+        a.data_[i] = ~a.data_[i];
+    }
+    return a;
+}
+
+template<class FunctorT>
+big_integer &big_integer::apply_bitwise_operation(big_integer const &rhs, FunctorT functor) {
+    big_integer that = to_binary(rhs);
+
+    if (sign_) {
+        --*this;
+    }
+    if (that.sign_) {
+        --that;
+    }
+
+    if (data_.size() > that.data_.size()) {
+        swap(*this, that);
+    }
+
+    for (size_t i = 0; i < that.data_.size(); i++) {
+        if (i >= data_.size()) {
+            data_.push_back(sign_ == 1 ? UMAX : 0);
+        }
+        data_[i] = functor(data_[i], that.data_[i]);
+        sign_ = functor(sign_, that.sign_);
+    }
+
+    if (sign_) {
+        data_.push_back(UMAX);
+        *this = to_binary(*this + 1);
+    }
+
+    normalize(*this);
+    return *this ;
 }
 
 big_integer &big_integer::operator<<=(int rhs) {

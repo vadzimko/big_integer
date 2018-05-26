@@ -7,6 +7,9 @@
 #include <utility>
 #include <gmp.h>
 #include <vector>
+#include <functional>
+#include <cstddef>
+#include <iosfwd>
 
 struct big_integer
 {
@@ -65,10 +68,14 @@ private:
     big_integer& abs_add(big_integer const& rhs, bool sign);
     big_integer& abs_sub(big_integer const& rhs, bool sign, int comp);
 
+    template<class FunctorT>
+    big_integer& apply_bitwise_operation(big_integer const & rhs, FunctorT functor);
+
     void add_big_int(my_vector &a, ui x, size_t index);
     static void swap(big_integer &a, big_integer &b);
     static int abs_compare(big_integer const& a, big_integer const& b);
     static void normalize(big_integer &a);
+    big_integer to_binary(big_integer a);
 
 };
 big_integer operator+(big_integer a, big_integer const& b);
